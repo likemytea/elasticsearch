@@ -51,7 +51,7 @@ vm.max_map_count=262144
 ----------------------
 springboot集成 es客户端
 ----------------------
-elasticsearch原理及springbootdemo：https://blog.csdn.net/KingBoyWorld/article/details/78654820  https://github.com/KimZing/
+elasticsearch原理及springbootdemo：https://blog.csdn.net/KingBoyWorld/article/details/78654820
 .properties
 spring.data.elasticsearch.cluster-name=my-application-1
 spring.data.elasticsearch.cluster-nodes=172.16.176.211:9300
@@ -67,7 +67,10 @@ spring.data.elasticsearch.cluster-nodes=172.16.176.211:9300
         </dependency>
 .写具体的代码
 TestElasticsearchService.java
-
+测试：
+http://localhost:8080/save?username=李海
+http://localhost:8080/search?username=李名&pageindex=0&pagesize=100
+或者用junit ElasticsearchApplicationTests
 
 
 
