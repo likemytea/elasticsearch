@@ -1,5 +1,7 @@
 package com.chenxing.elasticsearch;
 
+import java.util.List;
+
 /**
  * elasticsearch demo
  * <p>
@@ -11,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
-import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -45,12 +46,24 @@ public class ElasticsearchApplication {
 	}
 
 	@RequestMapping(value = "/search", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
-	public String search(@RequestParam String username) {
-		User user = new User();
-		user.setSysUserId(Long.parseLong(PrimarykeyGenerated.generateId(false)));
-		user.setUserName(username);
-		user.setPassWord("pwd");
-		Page<User> res = elasticService.search(user);
-		return JSON.toJSONString(res);
+	public String search(@RequestParam String username, @RequestParam int pageindex, @RequestParam int pagesize) {
+		User u = new User();
+		u.setSysUserId(0);
+		u.setUserName(username);
+		u.setPassWord("pwd");
+		List<User> lst = elasticService.search(u, pageindex, pagesize);
+		return JSON.toJSONString(lst);
 	}
+
+	@RequestMapping(value = "/searchBySelfDefine", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+	public String searchBySelfDefine(@RequestParam String username, @RequestParam int pageindex,
+			@RequestParam int pagesize) {
+		User u = new User();
+		u.setSysUserId(0);
+		u.setUserName(username);
+		u.setPassWord("pwd");
+		elasticService.searchBySelfDefine(u, pageindex, pagesize);
+		return JSON.toJSONString("{}");
+	}
+
 }

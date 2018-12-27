@@ -5,20 +5,22 @@ import java.util.List;
 
 import org.assertj.core.util.Lists;
 import org.elasticsearch.index.query.BoolQueryBuilder;
-import org.elasticsearch.index.query.FuzzyQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.index.query.QueryStringQueryBuilder;
 import org.elasticsearch.search.sort.FieldSortBuilder;
 import org.elasticsearch.search.sort.SortBuilders;
 import org.elasticsearch.search.sort.SortOrder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.elasticsearch.core.query.NativeSearchQuery;
 import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
-import org.springframework.data.elasticsearch.core.query.SearchQuery;
 import org.springframework.stereotype.Service;
 
+import com.alibaba.fastjson.JSON;
 import com.chenxing.elasticsearch.entity.User;
 import com.chenxing.elasticsearch.repo.UserRepository;
 
@@ -28,6 +30,7 @@ import com.chenxing.elasticsearch.repo.UserRepository;
  */
 @Service(value = "testESService")
 public class TestElasticsearchService {
+	private final Logger log = LoggerFactory.getLogger(this.getClass());
 	@Autowired
 	private UserRepository userRepository;
 
@@ -35,14 +38,22 @@ public class TestElasticsearchService {
 		return userRepository.save(user);
 	}
 
-	public List<User> findAll() {
+	public List<User> searchAll() {
 		Page<User> res = null;
 		List<User> arrlst = new ArrayList<User>();
 		arrlst = Lists.newArrayList(userRepository.findAll());
 		return arrlst;
 	}
 
-	public Page<User> search(User user) {
+	public List<User> search(User u, int pageindex, int pagesize) {
+
+		Pageable pageable = PageRequest.of(pageindex, pagesize);
+		List<User> arrlst = new ArrayList<User>();
+		arrlst = userRepository.findByUserNameLike(u.getUserName(), pageable);
+		return arrlst;
+	}
+
+	public Page<User> searchBySelfDefine(User user, int pageindex, int pagesize) {
 		// 创建builder
 		BoolQueryBuilder builder = QueryBuilders.boolQuery();
 		// builder下有must、should以及mustNot 相当于sql中的and、or以及not
@@ -58,24 +69,16 @@ public class TestElasticsearchService {
 		// 将搜索条件设置到构建中
 		nativeSearchQueryBuilder.withQuery(builder);
 		// 将分页设置到构建中
-		nativeSearchQueryBuilder.withPageable(PageRequest.of(0, 2));
+		nativeSearchQueryBuilder.withPageable(PageRequest.of(pageindex, pagesize));
 		// 将排序设置到构建中
 		nativeSearchQueryBuilder.withSort(sort);
 		// 生产NativeSearchQuery
 		NativeSearchQuery query = nativeSearchQueryBuilder.build();
 		// 执行,返回包装结果的分页
 		Page<User> resutlList = userRepository.search(query);
-		return resutlList;
-	}
+		log.info(JSON.toJSONString(resutlList));
 
-	private SearchQuery buildQuery(String userName) {
-		FuzzyQueryBuilder queryBuilders = QueryBuilders.fuzzyQuery("userName", userName);
-		FieldSortBuilder sortBuilders = SortBuilders.fieldSort("sysUserId");
-		NativeSearchQueryBuilder builder1 = new NativeSearchQueryBuilder().withFilter(queryBuilders)
-				.withSort(sortBuilders)
-				.withPageable(PageRequest.of(0, 20));
-		SearchQuery searchQuery = builder1.build();
-		return searchQuery;
+		return resutlList;
 	}
 
 }

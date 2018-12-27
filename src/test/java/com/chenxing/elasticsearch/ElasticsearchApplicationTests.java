@@ -28,7 +28,7 @@ public class ElasticsearchApplicationTests {
 		try {
 			// this.save();
 			// this.findAllUser();
-			this.searchUserList();
+			this.search();
 
 		} catch (Exception e) {
 			log.error(e.getMessage());
@@ -46,19 +46,33 @@ public class ElasticsearchApplicationTests {
 		testESService.save(u);
 	}
 
-	private void searchUserList() {
-		User u = new User();
-		u.setSysUserId(Long.parseLong(PrimarykeyGenerated.generateId(false)));
-		u.setUserName("中");
-		u.setPassWord("pwd");
-		Page<User> p = testESService.search(u);
+	/** 自定义搜索 */
+	private void searchBySelfDefine() {
+		User user = new User();
+		user.setSysUserId(Long.parseLong(PrimarykeyGenerated.generateId(false)));
+		user.setUserName("中");
+		user.setPassWord("pwd");
+		Page<User> p = testESService.searchBySelfDefine(user, 0, 30);
 		log.info(JSON.toJSONString(p));
 	}
 
-	private void findAllUser() {
-		List<User> lst = testESService.findAll();
+	/** 搜索全部 */
+	private void searchAllUser() {
+		List<User> lst = testESService.searchAll();
 		for (User user : lst) {
 			log.info(JSON.toJSONString(user));
+		}
+	}
+
+	/** 全文搜索 */
+	private void search() {
+		User user = new User();
+		user.setSysUserId(Long.parseLong(PrimarykeyGenerated.generateId(false)));
+		user.setUserName("和国");
+		user.setPassWord("pwd");
+		List<User> lst = testESService.search(user, 0, 10);
+		for (User u : lst) {
+			log.info(JSON.toJSONString(u));
 		}
 	}
 }
