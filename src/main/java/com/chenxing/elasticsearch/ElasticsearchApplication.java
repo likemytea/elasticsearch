@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -59,11 +60,11 @@ public class ElasticsearchApplication {
 	public String searchBySelfDefine(@RequestParam String username, @RequestParam int pageindex,
 			@RequestParam int pagesize) {
 		User u = new User();
-		u.setSysUserId(0);
+		u.setSysUserId(18122714040000001L);
 		u.setUserName(username);
 		u.setPassWord("pwd");
-		elasticService.searchBySelfDefine(u, pageindex, pagesize);
-		return JSON.toJSONString("{}");
+		Page<User> page = elasticService.searchBySelfDefine(u, pageindex, pagesize);
+		return JSON.toJSONString(JSON.toJSONString(page));
 	}
 
 }

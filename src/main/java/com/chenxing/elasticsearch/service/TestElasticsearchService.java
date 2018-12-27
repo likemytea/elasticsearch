@@ -60,7 +60,7 @@ public class TestElasticsearchService {
 		// 设置模糊搜索,真实姓名中包含张的用户
 		builder.must(QueryBuilders.fuzzyQuery("userName", user.getUserName()));
 		// 设置sysUserId的查询条件恒等于18111314514100021
-		builder.must(new QueryStringQueryBuilder("18111314514100021").field("sysUserId"));
+		builder.must(new QueryStringQueryBuilder(String.valueOf(user.getSysUserId())).field("sysUserId"));
 		// 排序
 		FieldSortBuilder sort = SortBuilders.fieldSort("sysUserId").order(SortOrder.DESC);
 
