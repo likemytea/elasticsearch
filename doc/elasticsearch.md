@@ -10,8 +10,8 @@ network.host: 172.16.176.211  ,这个必须改，否则外部ip连不上
 
 https://www.jianshu.com/p/e59a3cce5840
 .新建用户和组，并为用户赋予解压elasticsearch后产生的文件夹权限
-adduser 你的用户名
-passwd  你的用户名 ，然后会让你输入密码
+adduser elasticsearch
+passwd  elasticsearch ，然后会让你输入密码
 chown -R 你的用户名  文件夹名
 .启动方式：进到bin下 ./elasticsearch -d
 .验证安装结果
@@ -51,6 +51,7 @@ vm.max_map_count=262144
 ----------------------
 springboot集成 es客户端
 ----------------------
+elasticsearch原理及springbootdemo：https://blog.csdn.net/KingBoyWorld/article/details/78654820  https://github.com/KimZing/
 .properties
 spring.data.elasticsearch.cluster-name=my-application-1
 spring.data.elasticsearch.cluster-nodes=172.16.176.211:9300

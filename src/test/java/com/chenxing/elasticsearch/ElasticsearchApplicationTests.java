@@ -1,5 +1,7 @@
 package com.chenxing.elasticsearch;
 
+import java.util.List;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
@@ -22,14 +24,24 @@ public class ElasticsearchApplicationTests {
 	private TestElasticsearchService testESService;
 	@Test
 	public void contextLoads() {
-		this.save();
-		// this.searchUserList();
+		long start = System.currentTimeMillis();
+		try {
+			// this.save();
+			// this.findAllUser();
+			this.searchUserList();
+
+		} catch (Exception e) {
+			log.error(e.getMessage());
+			e.printStackTrace();
+		}
+		long end = System.currentTimeMillis();
+		log.info("costtime:" + (end - start));
 	}
 
 	private void save() {
 		User u = new User();
 		u.setSysUserId(Long.parseLong(PrimarykeyGenerated.generateId(false)));
-		u.setUserName("名字" + PrimarykeyGenerated.generateId(false));
+		u.setUserName("名11字" + PrimarykeyGenerated.generateId(false));
 		u.setPassWord("pwd");
 		testESService.save(u);
 	}
@@ -37,10 +49,16 @@ public class ElasticsearchApplicationTests {
 	private void searchUserList() {
 		User u = new User();
 		u.setSysUserId(Long.parseLong(PrimarykeyGenerated.generateId(false)));
-		u.setUserName("名字" + PrimarykeyGenerated.generateId(false));
+		u.setUserName("中");
 		u.setPassWord("pwd");
 		Page<User> p = testESService.search(u);
 		log.info(JSON.toJSONString(p));
 	}
 
+	private void findAllUser() {
+		List<User> lst = testESService.findAll();
+		for (User user : lst) {
+			log.info(JSON.toJSONString(user));
+		}
+	}
 }
