@@ -68,8 +68,12 @@ spring.data.elasticsearch.cluster-nodes=172.16.176.211:9300
 .写具体的代码
 TestElasticsearchService.java
 测试：
-http://localhost:8080/save?username=李海
-http://localhost:8080/search?username=李名&pageindex=0&pagesize=100
+使用 swagger2测试：
+ http://localhost:8080/swagger-ui.html#!/test-controller/searchBySelfDefineUsingPOST
+ 
+使用restclient测试
+http://localhost:8080/searchBySelfDefine?username=李&userid=&password=&pageindex=0&pagesize=100
+
 或者用junit ElasticsearchApplicationTests
 
 
