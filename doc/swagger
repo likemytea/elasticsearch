@@ -1,0 +1,24 @@
+https://www.cnblogs.com/fengli9998/p/7522973.html
+...pom.xml
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger2</artifactId>
+            <version>2.4.0</version>
+        </dependency>
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger-ui</artifactId>
+            <version>2.4.0</version>
+        </dependency>
+...启动类所在目录新增java类。
+       Swagger2.java
+...vo实体类
+    成员变量上添加
+	@ApiModelProperty(value = "map列表")
+	private Map<String, String> tm;
+...controller类
+类名上追加
+@Api("TestController-api")
+方法体上追加
+@ApiOperation(value = "测试swagger-value", notes = "测试swagger-notes")
+	

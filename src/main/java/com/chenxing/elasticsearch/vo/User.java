@@ -1,8 +1,13 @@
 package com.chenxing.elasticsearch.vo;
 
+import io.swagger.annotations.ApiModelProperty;
+
 public class User {
+	@ApiModelProperty(value = "用户ID")
 	private long sysUserId;
+	@ApiModelProperty(value = "用户名称")
 	private String userName;
+	@ApiModelProperty(value = "用户密码")
 	private String passWord;
 
 	public long getSysUserId() {
