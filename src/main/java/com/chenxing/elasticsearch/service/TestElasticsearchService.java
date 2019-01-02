@@ -19,6 +19,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.elasticsearch.core.query.NativeSearchQuery;
 import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import com.alibaba.fastjson.JSON;
 import com.chenxing.elasticsearch.entity.User;
@@ -57,12 +58,23 @@ public class TestElasticsearchService {
 		// 创建builder
 		BoolQueryBuilder builder = QueryBuilders.boolQuery();
 		// builder下有must、should以及mustNot 相当于sql中的and、or以及not
-		// 设置模糊搜索,真实姓名中包含张的用户
-		builder.must(QueryBuilders.fuzzyQuery("userName", user.getUserName()));
-		// 设置sysUserId的查询条件恒等于18111314514100021
-		builder.must(new QueryStringQueryBuilder(String.valueOf(user.getSysUserId())).field("sysUserId"));
+		// // 设置模糊搜索,真实姓名中包含张的用户
+		// builder.must(QueryBuilders.fuzzyQuery("userName", user.getUserName()));
+
+		// 设置查询条件之全文搜索
+		builder.must(QueryBuilders.matchQuery("userName", user.getUserName()));
+
+		// 设置查询条件之精确匹配
+		if (!StringUtils.isEmpty(user.getPassWord())) {
+			builder.must(new QueryStringQueryBuilder(String.valueOf(user.getPassWord())).field("passWord"));
+		}
+		// 设置查询条件之精确匹配
+		if ((!StringUtils.isEmpty(user.getSysUserId()) && (user.getSysUserId() != 0L))) {
+			builder.must(new QueryStringQueryBuilder(String.valueOf(user.getSysUserId())).field("sysUserId"));
+		}
+
 		// 排序
-		FieldSortBuilder sort = SortBuilders.fieldSort("sysUserId").order(SortOrder.DESC);
+		FieldSortBuilder sort = SortBuilders.fieldSort("sysUserId").order(SortOrder.ASC);
 
 		// 构建查询
 		NativeSearchQueryBuilder nativeSearchQueryBuilder = new NativeSearchQueryBuilder();

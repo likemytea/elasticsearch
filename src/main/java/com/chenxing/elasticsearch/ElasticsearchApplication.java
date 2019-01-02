@@ -14,6 +14,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.data.domain.Page;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -56,13 +57,20 @@ public class ElasticsearchApplication {
 		return JSON.toJSONString(lst);
 	}
 
+	/**
+	 * 查询例子： username作为全文搜索查询条件 。userid和password作为精确查询条件
+	 * 
+	 */
 	@RequestMapping(value = "/searchBySelfDefine", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
-	public String searchBySelfDefine(@RequestParam String username, @RequestParam int pageindex,
+	public String searchBySelfDefine(@RequestParam String username, @RequestParam String userid,
+			@RequestParam String password, @RequestParam int pageindex,
 			@RequestParam int pagesize) {
 		User u = new User();
-		u.setSysUserId(18122714040000001L);
+		if (!StringUtils.isEmpty(userid)) {
+			u.setSysUserId(Long.parseLong(userid));
+		}
 		u.setUserName(username);
-		u.setPassWord("pwd");
+		u.setPassWord(password);
 		Page<User> page = elasticService.searchBySelfDefine(u, pageindex, pagesize);
 		return JSON.toJSONString(JSON.toJSONString(page));
 	}
