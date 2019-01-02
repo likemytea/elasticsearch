@@ -26,9 +26,9 @@ public class ElasticsearchApplicationTests {
 	public void contextLoads() {
 		long start = System.currentTimeMillis();
 		try {
-			// this.save();
+			this.save();
 			// this.findAllUser();
-			this.search();
+			// this.search();
 
 		} catch (Exception e) {
 			log.error(e.getMessage());
@@ -41,8 +41,8 @@ public class ElasticsearchApplicationTests {
 	private void save() {
 		User u = new User();
 		u.setSysUserId(Long.parseLong(PrimarykeyGenerated.generateId(false)));
-		u.setUserName("名11字" + PrimarykeyGenerated.generateId(false));
-		u.setPassWord("pwd");
+		u.setUserName("李海" + PrimarykeyGenerated.generateId(false));
+		u.setPassWord("li123456hai");
 		testESService.save(u);
 	}
 

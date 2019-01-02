@@ -6,7 +6,6 @@ import java.util.List;
 import org.assertj.core.util.Lists;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
-import org.elasticsearch.index.query.QueryStringQueryBuilder;
 import org.elasticsearch.search.sort.FieldSortBuilder;
 import org.elasticsearch.search.sort.SortBuilders;
 import org.elasticsearch.search.sort.SortOrder;
@@ -66,11 +65,16 @@ public class TestElasticsearchService {
 
 		// 设置查询条件之精确匹配
 		if (!StringUtils.isEmpty(user.getPassWord())) {
-			builder.must(new QueryStringQueryBuilder(String.valueOf(user.getPassWord())).field("passWord"));
+			// termquery不支持中文
+			builder.must(QueryBuilders.termsQuery("passWord", user.getPassWord(), "li123456hai"));
+
+			// builder.must(new
+			// QueryStringQueryBuilder(String.valueOf(user.getPassWord())).field("passWord"));
 		}
 		// 设置查询条件之精确匹配
 		if ((!StringUtils.isEmpty(user.getSysUserId()) && (user.getSysUserId() != 0L))) {
-			builder.must(new QueryStringQueryBuilder(String.valueOf(user.getSysUserId())).field("sysUserId"));
+			builder.must(QueryBuilders.termQuery("sysUserId", String.valueOf(user.getSysUserId())));
+
 		}
 
 		// 排序
