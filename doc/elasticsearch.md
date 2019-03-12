@@ -8,7 +8,7 @@ cluster.name: my-application-1
 bootstrap.memory_lock: true   ,关闭使用交换分区
 network.host: 172.16.176.211  ,这个必须改，否则外部ip连不上
 
-https://www.jianshu.com/p/e59a3cce5840
+elasticserch 性能优化：  https://www.jianshu.com/p/e59a3cce5840
 .新建用户和组，并为用户赋予解压elasticsearch后产生的文件夹权限
 adduser elasticsearch
 passwd  elasticsearch ，然后会让你输入密码
@@ -16,7 +16,7 @@ chown -R 你的用户名  文件夹名
 .启动方式：进到bin下 ./elasticsearch -d
 .验证安装结果
 curl 'http://localhost:9200/?pretty'
-
+http://172.16.176.210:9200/rbac/user/18111218125600001
 
 错误集锦=====================================================
 问题：锁定内存失败
