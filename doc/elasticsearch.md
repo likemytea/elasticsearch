@@ -1,5 +1,9 @@
 ------------------------------------
 安装https://www.jianshu.com/p/688c0fbe7f39
+重建索引优化：https://blog.csdn.net/laoyang360/article/details/81589459
+elasticsearch原理理解：https://www.jianshu.com/p/297e13045605
+                    https://www.cnblogs.com/kevingrace/p/7693422.html
+                    https://blog.csdn.net/baichoufei90/article/details/82901270
 ------------------------------------
 .下载并解压es tar包即可。最好是5.6.9版本，因为 spring全家桶用的是这个版本的
 .配置文件有  elasticsearch.yml 和 jvm.options,可以修改里边的配置
