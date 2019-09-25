@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.alibaba.fastjson.JSON;
-import com.chenxing.common.distributedKey.PrimarykeyGenerated;
 import com.chenxing.elasticsearch.entity.User;
 import com.chenxing.elasticsearch.service.TestElasticsearchService;
 
@@ -32,7 +31,7 @@ public class TestController {
 	@RequestMapping(value = "/save", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
 	public String save(@RequestParam String username) {
 		User u = new User();
-		u.setSysUserId(Long.parseLong(PrimarykeyGenerated.generateId(false)));
+		u.setSysUserId(System.currentTimeMillis());
 		u.setUserName(username);
 		u.setPassWord("pwd");
 		User res = elasticService.save(u);

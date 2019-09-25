@@ -12,7 +12,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.alibaba.fastjson.JSON;
-import com.chenxing.common.distributedKey.PrimarykeyGenerated;
 import com.chenxing.elasticsearch.entity.User;
 import com.chenxing.elasticsearch.service.TestElasticsearchService;
 
@@ -40,8 +39,8 @@ public class ElasticsearchApplicationTests {
 
 	private void save() {
 		User u = new User();
-		u.setSysUserId(Long.parseLong(PrimarykeyGenerated.generateId(false)));
-		u.setUserName("李海" + PrimarykeyGenerated.generateId(false));
+		u.setSysUserId(System.currentTimeMillis());
+		u.setUserName("李海" + System.currentTimeMillis());
 		u.setPassWord("li123456hai");
 		testESService.save(u);
 	}
@@ -49,7 +48,7 @@ public class ElasticsearchApplicationTests {
 	/** 自定义搜索 */
 	private void searchBySelfDefine() {
 		User user = new User();
-		user.setSysUserId(Long.parseLong(PrimarykeyGenerated.generateId(false)));
+		user.setSysUserId(System.currentTimeMillis());
 		user.setUserName("中");
 		user.setPassWord("pwd");
 		Page<User> p = testESService.searchBySelfDefine(user, 0, 30);
@@ -67,7 +66,7 @@ public class ElasticsearchApplicationTests {
 	/** 全文搜索 */
 	private void search() {
 		User user = new User();
-		user.setSysUserId(Long.parseLong(PrimarykeyGenerated.generateId(false)));
+		user.setSysUserId(System.currentTimeMillis());
 		user.setUserName("和国");
 		user.setPassWord("pwd");
 		List<User> lst = testESService.search(user, 0, 10);

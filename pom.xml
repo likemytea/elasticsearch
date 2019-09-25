@@ -39,9 +39,8 @@
             <version>5.6.11</version> 
         </dependency>
         <dependency>
-            <groupId>com.chenxing</groupId>
-            <artifactId>common3</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
 	    <dependency>
 	       <groupId>com.alibaba</groupId>
